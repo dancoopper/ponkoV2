@@ -1,4 +1,4 @@
-package src
+package main
 
 import (
 	"fyne.io/fyne/v2/app"
@@ -7,6 +7,7 @@ import (
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 	"image/color"
+	"time"
 )
 
 func MainWin() {
@@ -35,7 +36,8 @@ func MainWin() {
 	//image := canvas.NewImageFromURI(uri)
 	// image := canvas.NewImageFromImage(src)
 	// image := canvas.NewImageFromReader(reader, name)
-	image := canvas.NewImageFromFile("pic/nasapic.jpg")
+	date := "nasa" + time.DateOnly + ".jpg"
+	image := canvas.NewImageFromFile("pic/" + date)
 	image.FillMode = canvas.ImageFillOriginal
 
 	content := container.New(layout.NewVBoxLayout(), tCent, image, eCent)

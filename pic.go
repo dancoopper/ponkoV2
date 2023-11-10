@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 /*
@@ -118,8 +119,10 @@ func DownLoadPic() {
 	}
 	defer response.Body.Close()
 
+	date := "nasa" + time.DateOnly + ".jpg"
+
 	//open a file for writing
-	file, err := os.Create("pic/nasapic.jpg")
+	file, err := os.Create("pic/" + date)
 	if err != nil {
 		log.Fatal(err)
 	}
