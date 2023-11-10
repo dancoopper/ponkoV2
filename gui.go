@@ -1,4 +1,4 @@
-package main
+package src
 
 import (
 	"fyne.io/fyne/v2/app"
@@ -33,7 +33,7 @@ func MainWin() {
 
 	//image := canvas.NewImageFromResource(theme.FyneLogo())
 	//image := canvas.NewImageFromURI(uri)
-	// image := canvas.NewImageFromImage(main)
+	// image := canvas.NewImageFromImage(src)
 	// image := canvas.NewImageFromReader(reader, name)
 	image := canvas.NewImageFromFile("pic/nasapic.jpg")
 	image.FillMode = canvas.ImageFillOriginal
