@@ -7,6 +7,7 @@ import (
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 	"image/color"
+	"strings"
 	"time"
 )
 
@@ -16,15 +17,16 @@ func MainWin() {
 	w2 := a.NewWindow("Impatient bitch")
 	w2.Hide()
 
-	exText := widget.NewLabel("GIRL GIVE ME SOME TIME...I'M FUCKING WORKING ON IT DAMN")
-	w2.SetContent(exText)
+	//text := widget.NewLabel(Data1.Explanation)
+	//text.Wrapping = fyne.TextWrap(4)
 
-	/*
-		exText := widget.NewLabel(Data1.Explanation)
-		exText.Wrapping = fyne.TextWrapWord
-		w2.SetContent(exText)
+	r := strings.NewReplacer(".", "\n")
+	explanT := r.Replace(Data1.Explanation)
 
-	*/
+	list := widget.NewLabel(explanT)
+	//exText := widget.NewLabel("GIRL GIVE ME SOME TIME...I'M FUCKING WORKING ON IT DAMN")
+	con := container.New(layout.NewCenterLayout(), list)
+	w2.SetContent(con)
 
 	title := canvas.NewText(Data1.Title, color.White)
 	tCent := container.New(layout.NewCenterLayout(), title)
@@ -32,15 +34,11 @@ func MainWin() {
 	explan := widget.NewButton("Info", w2.Show)
 	eCent := container.New(layout.NewCenterLayout(), explan)
 
-	//image := canvas.NewImageFromResource(theme.FyneLogo())
-	//image := canvas.NewImageFromURI(uri)
-	// image := canvas.NewImageFromImage(src)
-	// image := canvas.NewImageFromReader(reader, name)
 	date := "nasa" + time.DateOnly + ".jpg"
 	image := canvas.NewImageFromFile("pic/" + date)
 	image.FillMode = canvas.ImageFillOriginal
 
-	content := container.New(layout.NewVBoxLayout(), tCent, image, eCent)
+	content := container.NewBorder(tCent, eCent, nil, nil, image)
 	w.SetContent(content)
 	w.SetOnClosed(w.Close)
 	w.ShowAndRun()
