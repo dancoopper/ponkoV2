@@ -74,7 +74,7 @@ type JsonItems struct {
 var Data1 JsonItems
 
 func Geturl() string {
-	var apiURL = "https://api.nasa.gov/planetary/apod?api_key=zqquOTzAtTfl2s3nMZaaiXMnlZvfBNDtomkmLlFj"
+	var apiURL = "https://api.nasa.gov/planetary/apod?api_key=***"
 
 	reqst, err := http.NewRequest("GET", apiURL, nil)
 
