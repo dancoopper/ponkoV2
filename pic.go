@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
-	"time"
+	//"time"
 )
 
 /*
@@ -60,6 +61,7 @@ type Items struct {
 */
 
 type JsonItems struct {
+	CopyRight      string
 	Date           string
 	Explanation    string
 	Hdurl          string
@@ -72,7 +74,7 @@ type JsonItems struct {
 var Data1 JsonItems
 
 func Geturl() string {
-	var apiURL = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
+	var apiURL = "https://api.nasa.gov/planetary/apod?api_key=zqquOTzAtTfl2s3nMZaaiXMnlZvfBNDtomkmLlFj"
 
 	reqst, err := http.NewRequest("GET", apiURL, nil)
 
@@ -119,10 +121,10 @@ func DownLoadPic() {
 	}
 	defer response.Body.Close()
 
-	date := "nasa" + time.DateOnly + ".jpg"
+	datePath := "pic/" + "nasa" + Data1.Date + ".jpg"
 
 	//open a file for writing
-	file, err := os.Create("pic/" + date)
+	file, err := os.Create(datePath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -134,4 +136,40 @@ func DownLoadPic() {
 		log.Fatal(err)
 	}
 	//fmt.Println("Success!")
+}
+
+//todo Add a setings so you can pick wither or not to go and download the high-res pic or to copy the lower-res pic
+
+func SavePic() {
+	datePath := "pic/" + "nasa" + Data1.Date + ".jpg"
+
+	savedPic := Data1.Date + ".jpg"
+	if !fs.ValidPath(datePath) {
+		DownLoadPic()
+	}
+
+	file, err := os.Create("savedPics/" + savedPic)
+	if err != nil {
+		log.Fatal(err)
+
+	}
+	defer file.Close()
+
+	srcPath, e := os.Open(datePath)
+	if e != nil {
+		log.Fatal(e)
+	}
+
+	_, err = io.Copy(file, srcPath)
+	if err != nil {
+		log.Fatal(err)
+
+	}
+
+}
+func CleanUp() {
+	err := os.RemoveAll("pic/")
+	if err != nil {
+		log.Fatal(err)
+	}
 }
