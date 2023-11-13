@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	//"time"
 )
 
 /*
@@ -70,16 +69,21 @@ type JsonItems struct {
 	Title          string
 	Url            string
 }
+type Config struct {
+	API string
+}
+
+var Keys Config
 
 var Data1 JsonItems
 
 func Geturl() string {
-	var apiURL = "https://api.nasa.gov/planetary/apod?api_key=zqquOTzAtTfl2s3nMZaaiXMnlZvfBNDtomkmLlFj"
+	readConfig()
+	apiURL := "https://api.nasa.gov/planetary/apod?api_key=" + Keys.API
+	reqst, errr := http.NewRequest("GET", apiURL, nil)
 
-	reqst, err := http.NewRequest("GET", apiURL, nil)
-
-	if err != nil {
-		fmt.Print("err: ", err)
+	if errr != nil {
+		fmt.Print(errr)
 	}
 
 	client := &http.Client{}
@@ -87,6 +91,7 @@ func Geturl() string {
 
 	if error != nil {
 		fmt.Println(error)
+
 	}
 
 	responseBody, erroR := io.ReadAll(response.Body)
@@ -101,10 +106,9 @@ func Geturl() string {
 
 	Data := []byte(responseBody)
 
-	errr := json.Unmarshal(Data, &Data1)
-
-	if errr != nil {
-		fmt.Println(err)
+	errrr := json.Unmarshal(Data, &Data1)
+	if errrr != nil {
+		fmt.Println(errrr)
 	}
 
 	// clean up memory after execution
@@ -171,5 +175,16 @@ func CleanUp() {
 	err := os.RemoveAll("pic/")
 	if err != nil {
 		log.Fatal(err)
+	}
+}
+
+func readConfig() {
+	key, err := os.ReadFile("Secrets/keys.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+	errrr := json.Unmarshal(key, &Keys)
+	if errrr != nil {
+		fmt.Println(errrr)
 	}
 }
